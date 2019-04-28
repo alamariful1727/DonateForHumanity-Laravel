@@ -5,7 +5,7 @@
       <div class="navbar-holder d-flex align-items-center justify-content-between">
         <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a>
           <a href="{{ route('home.index') }}" class="navbar-brand">
-            <div class="brand-text d-none d-md-inline-block"><span>Online </span><strong class="text-primary">Car</strong><span>Rent</span></div>
+            <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">Donate</strong><strong class="text-danger">4</strong><strong class="text-primary">Humanity</strong></div>
           </a>
         </div>
         <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">

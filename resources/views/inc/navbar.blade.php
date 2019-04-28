@@ -13,7 +13,7 @@
         <ul class="navbar-nav mr-auto">
           @if (Auth::check() && Auth::user()->type == 'admin')
           <li class="nav-item">
-            <a class="nav-link text-warning" href="{{route('admin.index')}}">Switch to ADMIN</a>
+            <a class="nav-link text-info" href="{{route('admin.index')}}">Switch to ADMIN</a>
           </li>
           @endif
         </ul>
@@ -25,13 +25,13 @@
           <!-- cars -->
           <li class="nav-item dropdown">
             <div class="btn-group">
-              <a href="/cars" class="nav-link">Cars</a> @if (Auth::check())
-              <a href="#" class="nav-link dropdown-toggle dropdown-toggle-split" id="carMenu" data-toggle="dropdown" aria-haspopup="true"
+              <a href="{{route('campaign.index')}}" class="nav-link text-warning">Donate here!!</a> @if (Auth::check())
+              <a href="" class="nav-link dropdown-toggle dropdown-toggle-split" id="carMenu" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false" data-reference="parent">
                     <span class="sr-only">Toggle Dropdown</span>
                   </a>
               <div class="dropdown-menu  custom-dropdown" aria-labelledby="carMenu">
-                <a class="dropdown-item" href="/cars/add">Add new CAR!!</a>
+                <a class="dropdown-item" href="{{route('campaign.create')}}">Create campaign</a>
               </div>
               @endif
             </div>

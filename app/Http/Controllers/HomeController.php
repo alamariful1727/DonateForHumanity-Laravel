@@ -9,7 +9,7 @@ class HomeController extends Controller
     //main page
     public function index()
     {
-        $title = "Online Car Rent";
+        $title = "Donate for Humanity";
         return view('home.index')->with('title', $title);
     }
     //about page

@@ -22,6 +22,11 @@ Route::get('/about', 'HomeController@about')->name('home.about');
 // admin dashboard
 Route::group(['middleware' => ['auth', 'admin']], function () {
   Route::get('/admin', 'AdminController@index')->name('admin.index');
+  // admin home
+  Route::get('/admin/get-new-clients', 'AdminController@getNewClients')->name('admin.getNewClients');
+  Route::get('/admin/get-new-blogs', 'AdminController@getNewBlogs')->name('admin.getNewBlogs');
+  Route::get('/admin/get-user-counts', 'AdminController@getUserCount')->name('admin.getUserCount');
+  Route::get('/admin/get-per-day', 'AdminController@getPerDay')->name('admin.getPerDay');
   // users
   Route::get('/admin/user-details', 'AdminController@userDetails')->name('admin.userDetails');
   Route::get('/admin/get-user-details', 'AdminController@getUsersInfo')->name('admin.getUsersInfo');
@@ -33,11 +38,17 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
   // blogs
   Route::get('/admin/blog-details', 'AdminController@blogDetails')->name('admin.blogDetails');
   Route::get('/admin/get-blog-details', 'AdminController@getBlogsInfo')->name('admin.getBlogsInfo');
+  Route::get('/admin/blog-details/{id}/editBlog', 'AdminController@editBlog')->name('admin.editBlog');
+  Route::post('/admin/blog-details/{id}', 'AdminController@updateBlog')->name('admin.updateBlog');
+  Route::get('/admin/blog-details/{id}/deleteBlog', 'AdminController@deleteBlog')->name('admin.deleteBlog');
 });
 
 // blogs
 Route::resource('blog', 'BlogsController');
 Route::get('/myblogs', 'BlogsController@userBlogs')->name('blogs.userBlogs');
+
+// campaigns
+Route::resource('campaign', 'CampaignsController');
 
 // user dashboard
 Route::get('/{url}', 'DashboardController@index')->name('dashboard');

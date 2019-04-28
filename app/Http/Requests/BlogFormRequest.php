@@ -24,7 +24,7 @@ class BlogFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'body' => ['required', 'max:191', 'min:10'],
+            'body' => ['required', 'max:191', 'min:5'],
             'cover_image' => 'image|nullable|max:1999'
         ];
     }

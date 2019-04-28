@@ -1,18 +1,16 @@
 /*global $, document, Chart, LINECHART, data, options, window*/
-$(document).ready(function () {
-
-    'use strict';
+$(document).ready(function() {
+    "use strict";
 
     // Main Template Color
-    var brandPrimary = '#33b35a';
-
+    var brandPrimary = "#33b35a";
 
     // ------------------------------------------------------- //
     // Line Chart
     // ------------------------------------------------------ //
-    var LINECHART = $('#lineCahrt');
+    var LINECHART = $("#lineCahrt");
     var myLineChart = new Chart(LINECHART, {
-        type: 'line',
+        type: "line",
         options: {
             legend: {
                 display: false
@@ -27,10 +25,10 @@ $(document).ready(function () {
                     lineTension: 0.3,
                     backgroundColor: "rgba(77, 193, 75, 0.4)",
                     borderColor: brandPrimary,
-                    borderCapStyle: 'butt',
+                    borderCapStyle: "butt",
                     borderDash: [],
                     borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
+                    borderJoinStyle: "miter",
                     borderWidth: 1,
                     pointBorderColor: brandPrimary,
                     pointBackgroundColor: "#fff",
@@ -50,10 +48,10 @@ $(document).ready(function () {
                     lineTension: 0.3,
                     backgroundColor: "rgba(75,192,192,0.4)",
                     borderColor: "rgba(75,192,192,1)",
-                    borderCapStyle: 'butt',
+                    borderCapStyle: "butt",
                     borderDash: [],
                     borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
+                    borderJoinStyle: "miter",
                     borderWidth: 1,
                     pointBorderColor: "rgba(75,192,192,1)",
                     pointBackgroundColor: "#fff",
@@ -71,22 +69,17 @@ $(document).ready(function () {
         }
     });
 
-
     // ------------------------------------------------------- //
     // Pie Chart
     // ------------------------------------------------------ //
-    var PIECHART = $('#pieChart');
+    var PIECHART = $("#pieChart");
     var myPieChart = new Chart(PIECHART, {
-        type: 'doughnut',
+        type: "doughnut",
         data: {
-            labels: [
-                "First",
-                "Second",
-                "Third"
-            ],
+            labels: ["First", "Second", "Third"],
             datasets: [
                 {
-                    data: [300, 50, 100],
+                    data: [200, 50, 200],
                     borderWidth: [1, 1, 1],
                     backgroundColor: [
                         brandPrimary,
@@ -98,8 +91,8 @@ $(document).ready(function () {
                         "rgba(75,192,192,1)",
                         "#FFCE56"
                     ]
-                }]
+                }
+            ]
         }
     });
-
 });

@@ -40,6 +40,7 @@
           <a href="#blogsDropdown" aria-expanded="false" data-toggle="collapse"><i class="icon-check"></i>Blogs</a>
           <ul id="blogsDropdown" class="collapse list-unstyled ">
             <li><a href="{{route('admin.blogDetails')}}">Blog list</a></li>
+            <li><a href="{{route('blog.create')}}">Add blog</a></li>
           </ul>
         </li>
       </ul>
