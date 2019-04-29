@@ -23,7 +23,8 @@ class CampaignsController extends Controller
      */
     public function index()
     {
-        //
+        $data = Campaigns::orderBy('c_created_at', 'desc')->paginate(5);
+        return view('campaign.index')->with('campaigns', $data);
     }
 
     /**
@@ -44,7 +45,42 @@ class CampaignsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => ['required', 'string', 'max:191', 'unique:campaigns'],
+            'c_desc' => ['required', 'string', 'min:5', 'max:191'],
+            'c_budget' => ['required', 'integer', 'min:100'],
+            'duration' => ['required', 'integer', 'min:3', 'max:30'],
+            'cover_image' => 'image|required|max:1000'
+        ]);
+        // Handle File Upload
+        if ($request->hasFile('cover_image')) {
+            // Get filename with the extension
+            $filenameWithExt = $request->file('cover_image')->getClientOriginalName(); //aaa.png
+            // Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME); //aaa
+            // Get just ext
+            $extension = $request->file('cover_image')->getClientOriginalExtension(); //png
+            // Filename to store
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension; //aaa_12229151.png
+            // Upload Image
+            $path = $request->file('cover_image')->storeAs('public/campaign_images', $fileNameToStore);
+        }
+
+        $url = join("-", explode(" ", $request->title)); //health-care
+
+        // create Campaign
+        $Campaign = new Campaigns;
+        $Campaign->user_id = auth()->user()->id;
+        $Campaign->title = $request->title;
+        $Campaign->c_desc = $request->c_desc;
+        $Campaign->c_image = $fileNameToStore;
+        $Campaign->c_budget = $request->c_budget;
+        $Campaign->c_balance = 0;
+        $Campaign->duration = $request->duration;
+        $Campaign->c_url = $url;
+        $Campaign->save();
+
+        return redirect()->route('campaign.index')->with('success', 'New campaign created Title: ' . $request->title);
     }
 
     /**

@@ -22,10 +22,10 @@
       <ul id="side-main-menu" class="side-menu list-unstyled">
         <li><a href="{{ route('admin.index') }}"> <i class="icon-home"></i>Home</a></li>
         <li>
-          <a href="#carsDropdown" aria-expanded="false" data-toggle="collapse"><i class="icon-grid"></i>Cars</a>
+          <a href="#carsDropdown" aria-expanded="false" data-toggle="collapse"><i class="icon-grid"></i>Campaigns</a>
           <ul id="carsDropdown" class="collapse list-unstyled ">
-            <li><a href="#">Car list</a></li>
-            <li><a href="#">Add car</a></li>
+            <li><a href="#">Campaigns list</a></li>
+            <li><a href="#">Add campaign</a></li>
             <li><a href="#">Active cars</a></li>
           </ul>
         </li>

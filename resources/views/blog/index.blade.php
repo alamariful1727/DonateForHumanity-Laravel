@@ -88,7 +88,7 @@
     <!-- Delete Modal ends -->
 
   </div>
-  {{-- pagination --}} @if(Request::url() === 'http://onlinecarrent.com/blog') {{$blogs->links()}} @endif
+  {{-- pagination --}} @if(Request::url() === 'http://donate4humanity.com/blog') {{$blogs->links()}} @endif
   <!-- row ends -->
 </div>
 <script>
@@ -99,7 +99,7 @@
       id = $(btn).attr('id');
       console.log(blogID, id);
       const request = async () => {
-        const response = await fetch('http://onlinecarrent.com/blog/' + blogID);
+        const response = await fetch('http://donate4humanity.com/blog/' + blogID);
         const data = await response.json();
         console.log(data.body);
         document.getElementById('bbody').value = data.body;
@@ -119,7 +119,7 @@
         document.getElementById('bodyError').innerHTML = "Length should be between 1-191!!";
       } else {
 
-        axios.put('http://onlinecarrent.com/blog/' + blogID, {
+        axios.put('http://donate4humanity.com/blog/' + blogID, {
           body: document.getElementById('bbody').value
         })
         .then(response => {
@@ -134,10 +134,10 @@
     });
 // delete blog
     document.getElementById('deleteBlog').addEventListener("click", function () {
-        axios.delete('http://onlinecarrent.com/blog/' + blogID, { data: null })
+        axios.delete('http://donate4humanity.com/blog/' + blogID, { data: null })
         .then(response => {
           console.log(response);
-          window.location.href = "http://onlinecarrent.com/blog";
+          window.location.href = "http://donate4humanity.com/blog";
         })
         .catch(error => {
           console.log(error);

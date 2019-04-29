@@ -22,7 +22,7 @@
           <li class="nav-item">
             <a class="nav-link" href="{{route('home.index')}}">Home</a>
           </li>
-          <!-- cars -->
+          <!-- campaign -->
           <li class="nav-item dropdown">
             <div class="btn-group">
               <a href="{{route('campaign.index')}}" class="nav-link text-warning">Donate here!!</a> @if (Auth::check())
@@ -36,7 +36,7 @@
               @endif
             </div>
           </li>
-          <!-- cars ends-->
+          <!-- campaign ends-->
           <!-- blogs -->
           <li class="nav-item dropdown">
             <div class="btn-group">
