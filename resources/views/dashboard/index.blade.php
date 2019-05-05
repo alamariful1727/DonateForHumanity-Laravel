@@ -1,6 +1,26 @@
-@extends('layouts.app') 
+@extends('layouts.app')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @section('content')
-    @include('inc.msg')
+@include('inc.msg')
 <style>
     body {
         background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
@@ -31,15 +51,15 @@
                 <!--Card content-->
                 <div class="card-body">
                     <!--Title-->
-                    <h4 class="card-title">Hi, I'm <strong style="text-transform: capitalize;">{{$user->name}}</strong></h4>
+                    <h4 class="card-title">Hi, I'm <strong style="text-transform: capitalize;">{{$user->name}}</strong>
+                    </h4>
                     <hr class="my-3">
                     <!-- Email -->
                     <h6><i class="fas fa-envelope mr-2"></i>Email</h6>
                     <p class="text-muted">{{$user->email}}</p>
                     <!-- Member Since -->
                     <h6><i class="fas fa-user mr-2"></i>Member Since</h6>
-                    <p class="text-muted">@php $date= explode(" ",$user->created_at); echo $date[0]; 
-@endphp
+                    <p class="text-muted">@php $date= explode(" ",$user->created_at); echo $date[0];@endphp
                     </p>
                     <hr class="my-3">
                     <!-- description -->
@@ -51,70 +71,82 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">https://ocr.com/</span>
                         </div>
-                        <input type="text" readonly value='{{$user->url}}' class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                        <input type="text" readonly value='{{$user->url}}' class="form-control" id="basic-url"
+                            aria-describedby="basic-addon3">
                     </div>
                     <!-- edit btn -->
                     @if (Auth::check() && Auth::user()->id == $user->id)
-                    <a class="btn btn-info btn-md" href="{{route('dashboard.edit',[$user->id])}}" role="button" data-toggle="">Edit profile<i class="fas fa-pencil-alt ml-2"></i></a>                    @endif
+                    <a class="btn btn-info btn-md" href="{{route('dashboard.edit',[$user->id])}}" role="button"
+                        data-toggle="">Edit profile<i class="fas fa-pencil-alt ml-2"></i></a> @endif
 
                 </div>
 
             </section>
             <!--Section: Basic Info ENDS-->
-            <!-- Section: user info -->
-            {{--
+            <!-- Section: balance -->
+            @if (Auth::check() && Auth::user()->id == $user->id)
             <section class="card mb-4">
                 <div class="card-body text-center">
                     <h5>
-                        <strong>Information</strong>
+                        <strong><i class="fas fa-coins"></i> Balance</strong>
                     </h5>
-                    <table class="table">
+                    <h4>{{$user->balance}}</h4>
+                    <a class="btn btn-success btn-md" href="{{route('dashboard.recharge')}}" role="button"
+                        data-toggle="">Recharge</a>
+                </div>
+            </section>
+            @endif
+            <!-- Section: balance ends-->
+
+        </div>
+        <!-- Section: left ends-->
+
+        <div class="col-lg-7 col-md-12 mt-3">
+            <!--Section: campaign history-->
+            <section class="card mb-4">
+                <div class="card-body text-center">
+                    <h5>
+                        <strong>campaign history</strong>
+                    </h5>
+                    @if (count($user->campaigns)>0)
+                    <table class="table table-striped table-dark table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>No.</th>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
                         <tbody>
+                            @php $i=1;@endphp
+                            @foreach ($user->campaigns as $campaign)
                             <tr>
-                                <th scope="row">National ID</th>
-                                <td>
-                                    NID
-                                </td>
+                                <td scope="row">{{$i++}}</td>
+                                <td>{{$campaign->title}}</td>
+                                <td>{{$campaign->c_status}}</td>
+                                <td><a href="{{route('campaign.show',[$campaign->c_url])}}"
+                                        class="btn btn-info">view</a></td>
                             </tr>
-                            <tr>
-                                <th scope="row">Email</th>
-                                <td>
-                                    email.asd.com
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Username</th>
-                                <td>
-                                    Username
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Occupation</th>
-                                <td>
-                                    occupation
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
-                    <!-- Social -->
-
-                    <a class="btn btn-info btn-md" href="/user/settings" role="button" data-toggle="">Edit profile<i class="fas fa-pencil-alt ml-2"></i></a>
-
+                    @else
+                    <small>No campaign has been created yet!!</small>
+                    @endif
                 </div>
-            </section> --}}
-            <!-- Section: user info -->
-        </div>
-        <div class="col-lg-7 col-md-12 mt-3">
-            <!--Section: Rental history-->
+            </section>
+            <!--Section: campaign history ends-->
+            <!--Section: Donation history-->
             <section class="card mb-4">
                 <div class="card-body text-center">
                     <h5>
-                        <strong>Rental history</strong>
+                        <strong>Donation history</strong>
                     </h5>
                     <hr class="my-3">
                 </div>
             </section>
-            <!--Section: Rental history ends-->
+            <!--Section: Donation history ends-->
         </div>
     </div>
     <!-- row ends -->

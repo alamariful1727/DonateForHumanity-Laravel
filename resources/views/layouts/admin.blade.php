@@ -52,8 +52,8 @@
   <script src="{{ url('vendor/jquery.cookie/jquery.cookie.js')}}"></script>
   <script src="{{ url('vendor/jquery-validation/jquery.validate.min.js')}}"></script>
   <script src="{{ url('vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js')}}"></script>
-  {{--
-  <script src="{{ url('js/fa.js')}}"></script> --}}
+
+  <script src="{{ url('js/fa.js')}}"></script>
   <script src="{{ url('js/grasp_mobile_progress_circle-1.0.0.min.js')}}"></script>
   <script src="{{ url('js/charts-home.js')}}"></script>
   <!-- Main File-->

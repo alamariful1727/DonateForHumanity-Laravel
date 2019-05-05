@@ -57,8 +57,23 @@
             <div class="col-xl-2 col-md-4 col-6">
                 <div class="wrapper count-title d-flex">
                     <div class="icon"><i class="icon-padnote"></i></div>
-                    <div class="name"><strong class="text-uppercase">Work Orders</strong><span>Last 5 days</span>
-                        <div class="count-number">400</div>
+                    <div class="name"><strong class="text-uppercase">Campaigns</strong><span>
+                            <select class="form-control-sm" name="search_campaigns" id="search_campaigns">
+                                <option disabled >Select options</option>
+                                <option value="1" selected>Last 1 day</option>
+                                <option value="2">Last 2 days</option>
+                                <option value="3">Last 3 days</option>
+                                <option value="4">Last 4 days</option>
+                                <option value="5">Last 5 days</option>
+                                <option value="6">Last 6 days</option>
+                                <option value="7">Last 7 days</option>
+                                <option value="15">Last 15 days</option>
+                                <option value="1m">Last 1 month</option>
+                                <option value="6m">Last 6 months</option>
+                                <option value="1y">Last 1 year</option>
+                            </select>
+                        </span>
+                        <div class="count-number" id="total-campaigns"></div>
                     </div>
                 </div>
             </div>
@@ -109,9 +124,9 @@
             <!-- Line Chart -->
             <div class="col-lg-6 col-md-12 flex-lg-last flex-md-first align-self-baseline">
                 <div class="card sales-report">
-                    <h2 class="display h4">Blogs per day</h2>
+                    <h2 class="display h4">Charts</h2>
                     <div class="line-chart">
-                        <canvas id="blogPerDay"></canvas>
+                        <canvas id="dailycharts"></canvas>
                     </div>
                 </div>
             </div>
@@ -138,7 +153,20 @@
                 data: {query:query},
                 dataType: "json",
                 success: function (response) {
+                    console.log(response);
                     $('#total-blogs').html(response.total_data);
+                }
+            });
+        }
+        function fetch_new_campaigns(query='1') { 
+            $.ajax({
+                type: "GET",
+                url: "{{route('admin.getNewCampaigns')}}",
+                data: {query:query},
+                dataType: "json",
+                success: function (response) {
+                    console.log(response);
+                    $('#total-campaigns').html(response.total_data);
                 }
             });
         }
@@ -175,7 +203,7 @@
                 }
             });
         }
-        function fetch_BlogsPerDay() { 
+        function fetch_Charts() { 
             $.ajax({
                 type: "GET",
                 url: "{{route('admin.getPerDay')}}",
@@ -184,7 +212,7 @@
                 success: function (response) {
                     console.log(response.weekdays);
                     var brandPrimary = "#33b35a";
-                    var LINECHART = $("#blogPerDay");
+                    var LINECHART = $("#dailycharts");
                     var myLineChart = new Chart(LINECHART, {
                         type: "line",
                         options: {
@@ -239,6 +267,29 @@
                                     pointHitRadius: 10,
                                     data: [response.blogsPerDay['Sun'], response.blogsPerDay['Mon'], response.blogsPerDay['Tue'], response.blogsPerDay['Wed'], response.blogsPerDay['Thu'], response.blogsPerDay['Fri'], response.blogsPerDay['Sat']],
                                     spanGaps: false
+                                },
+                                {
+                                    label: "Number of Campaigns",
+                                    fill: true,
+                                    lineTension: 0.3,
+                                    backgroundColor: "rgba(75,145,192,0.4)",
+                                    borderColor: "rgba(75,145,192,1)",
+                                    borderCapStyle: "butt",
+                                    borderDash: [],
+                                    borderDashOffset: 0.0,
+                                    borderJoinStyle: "miter",
+                                    borderWidth: 2,
+                                    pointBorderColor: "rgba(255,0,0,1)",
+                                    pointBackgroundColor: "#fff",
+                                    pointBorderWidth: 2,
+                                    pointHoverRadius: 5,
+                                    pointHoverBackgroundColor: "rgba(75,145,192,1)",
+                                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                                    pointHoverBorderWidth: 2,
+                                    pointRadius: 1,
+                                    pointHitRadius: 10,
+                                    data: [response.campaignsPerDay['Sun'], response.campaignsPerDay['Mon'], response.campaignsPerDay['Tue'], response.campaignsPerDay['Wed'], response.campaignsPerDay['Thu'], response.campaignsPerDay['Fri'], response.campaignsPerDay['Sat']],
+                                    spanGaps: false
                                 }
                             ]
                         }
@@ -250,8 +301,9 @@
 
         fetch_new_clients();
         fetch_new_blogs();
+        fetch_new_campaigns();
         fetch_UserCount();
-        fetch_BlogsPerDay();
+        fetch_Charts();
 
         $('#search_clients').on('change', function () {
             console.log($(this).val());
@@ -262,6 +314,11 @@
             console.log($(this).val());
             var query = $(this).val();
             fetch_new_blogs(query);
+        });
+        $('#search_campaigns').on('change', function () {
+            console.log($(this).val());
+            var query = $(this).val();
+            fetch_new_campaigns(query);
         });
 
     });

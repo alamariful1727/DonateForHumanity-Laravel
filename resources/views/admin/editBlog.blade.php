@@ -35,31 +35,4 @@
         </div>
     </div>
 </section>
-<style>
-    .pagination {
-        justify-content: center;
-    }
-</style>
-<script>
-    $(function () {
-        fetch_user_data();
-        function fetch_user_data(query='') { 
-            $.ajax({
-                type: "GET",
-                url: "{{route('admin.getUsersInfo')}}",
-                data: {query:query},
-                dataType: "json",
-                success: function (response) {
-                    $('tbody').html(response.table_data);
-                    $('#total-user').html(response.total_data);
-                }
-            });
-        }
-        $('#search').on('keyup', function () {
-            var query = $(this).val();
-            fetch_user_data(query);
-        });
-    });
-
-</script>
 @endsection

@@ -54,7 +54,7 @@
           </li>
           <!-- Log out-->
           <li class="nav-item">
-            <a class="nav-link logout" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><span class="d-none d-sm-inline-block">{{ __('Logout') }}</span><i class="fa fa-sign-out"></i>
+            <a class="nav-link logout" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><span class="d-none d-sm-inline-block">{{ __('Logout') }}</span><i class=" ml-1 fas fa-sign-out-alt"></i>
             </a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
               @csrf

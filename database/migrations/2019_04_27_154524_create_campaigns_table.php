@@ -22,8 +22,8 @@ class CreateCampaignsTable extends Migration
             $table->integer('c_budget');
             $table->integer('c_balance');
             $table->integer('duration');
-            $table->string('starts')->default('none');
-            $table->string('ends')->default('none');
+            $table->string('starts')->default('TBA');
+            $table->string('ends')->default('TBA');
             $table->string('c_status')->default('pending');
             $table->string('c_url');
             $table->timestamps();

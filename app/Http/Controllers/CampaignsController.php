@@ -23,7 +23,7 @@ class CampaignsController extends Controller
      */
     public function index()
     {
-        $data = Campaigns::orderBy('c_created_at', 'desc')->paginate(5);
+        $data = Campaigns::orderBy('c_created_at', 'desc')->paginate(10);
         return view('campaign.index')->with('campaigns', $data);
     }
 
@@ -61,7 +61,7 @@ class CampaignsController extends Controller
             // Get just ext
             $extension = $request->file('cover_image')->getClientOriginalExtension(); //png
             // Filename to store
-            $fileNameToStore = $filename . '_' . time() . '.' . $extension; //aaa_12229151.png
+            $fileNameToStore =  time() . '.' . $extension; //aaa_12229151.png
             // Upload Image
             $path = $request->file('cover_image')->storeAs('public/campaign_images', $fileNameToStore);
         }
@@ -89,9 +89,10 @@ class CampaignsController extends Controller
      * @param  \App\Campaigns  $campaigns
      * @return \Illuminate\Http\Response
      */
-    public function show(Campaigns $campaigns)
+    public function show($url)
     {
-        //
+        $data = Campaigns::where('c_url', $url)->get();
+        return view('campaign.show')->with('campaign', $data[0]);
     }
 
     /**
@@ -100,9 +101,10 @@ class CampaignsController extends Controller
      * @param  \App\Campaigns  $campaigns
      * @return \Illuminate\Http\Response
      */
-    public function edit(Campaigns $campaigns)
+    public function edit($id)
     {
-        //
+        $data = Campaigns::find($id);
+        return view('campaign.edit')->with('campaign', $data);
     }
 
     /**
@@ -112,9 +114,48 @@ class CampaignsController extends Controller
      * @param  \App\Campaigns  $campaigns
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Campaigns $campaigns)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'c_desc' => ['required', 'string', 'min:5', 'max:191'],
+            'c_budget' => ['required', 'integer', 'min:100'],
+            'duration' => ['required', 'integer', 'min:3', 'max:30'],
+            'cover_image' => 'image|nullable|max:1000'
+        ]);
+
+        // create Campaign
+        $Campaign = Campaigns::find($id);
+        // if title changed
+        if ($request->title != $Campaign->title) {
+            $this->validate($request, [
+                'title' => ['required', 'string', 'min:5', 'max:191', 'unique:campaigns']
+            ]);
+        }
+
+        // Handle File Upload
+        if ($request->hasFile('cover_image')) {
+            // Get filename with the extension
+            $filenameWithExt = $request->file('cover_image')->getClientOriginalName(); //aaa.png
+            // Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME); //aaa
+            // Get just ext
+            $extension = $request->file('cover_image')->getClientOriginalExtension(); //png
+            // Filename to store
+            $fileNameToStore = time() . '.' . $extension; //aaa_12229151.png
+            // Upload Image
+            $path = $request->file('cover_image')->storeAs('public/campaign_images', $fileNameToStore);
+        }
+
+        $Campaign->title = $request->title;
+        $Campaign->c_desc = $request->c_desc;
+        if ($request->hasFile('cover_image')) {
+            $Campaign->c_image = $fileNameToStore;
+        }
+        $Campaign->c_budget = $request->c_budget;
+        $Campaign->duration = $request->duration;
+        $Campaign->save();
+
+        return redirect()->route('campaign.show', [$Campaign->c_url])->with('success', 'Campaign edited Title: ' . $request->title);
     }
 
     /**
@@ -123,8 +164,13 @@ class CampaignsController extends Controller
      * @param  \App\Campaigns  $campaigns
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Campaigns $campaigns)
+    public function destroy($id)
     {
-        //
+        if (auth()->user()->type == 'admin') {
+            $campaign = Campaigns::find($id);
+            $campaign->delete();
+            return redirect()->route('campaign.index')->with('success', 'Campaign Title:' . $campaign->title . '. has been Deleted.');
+        }
+        return redirect()->route('campaign.index')->with('error', 'Unauthorized attempt.');
     }
 }

@@ -13,21 +13,29 @@
 </style>
 
 <div class="container">
-  <h1 class="text-center head-text">Create Campaign!!</h1>
+  <h1 class="text-center head-text">Edit Campaign!!</h1>
   <hr class="head-hr">
 
-  <!-- row ends -->
+  <!-- row -->
   <div class="row">
     <div class="offset-lg-3 col-lg-6 col-md-12">
       <div class="card p-3">
-        <form method="POST" action="{{route('campaign.store')}}" enctype="multipart/form-data">
+        <!-- delete btn -->
+        @if (Auth::user()->type=='admin')
+        <a class="text-danger pl-1" href="{{route('campaign.destroy',[$campaign->cid])}}" onclick="event.preventDefault(); document.getElementById('campaign-delete-form').submit();">Delete <i class="fas fa-trash-alt"></i></a>
+        <form id="campaign-delete-form" action="{{route('campaign.destroy',[$campaign->cid])}}" method="POST" style="display: none;">
+          {{ method_field('DELETE') }} {{ csrf_field() }}
+        </form>
+        @endif
+        <!-- delete btn ends -->
+        <form method="POST" action="{{route('campaign.update',[$campaign->cid])}}" enctype="multipart/form-data">
           <!-- title -->
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text" id="title">Title</span>
             </div>
             <input type="text" required name="title" class="form-control" placeholder="Eg. Health and care" aria-label="title" aria-describedby="title"
-              value="{{old('title')}}">
+              value="@if (old('title')!='') {{old('title')}} @else {{$campaign->title}} @endif">
           </div>
           <!-- title error -->
           @if ($errors->has('title'))
@@ -38,19 +46,25 @@
           <!-- c_desc -->
           <div class="form-group">
             <label for="c_desc">Description</label>
-            <textarea name="c_desc" required class="form-control" placeholder="campaign's description" id="c_desc" rows="3">{{old('c_desc')}}</textarea>
+            <!-- c_desc check -->
+            @if (old('c_desc')!='')
+            <textarea name="c_desc" required class="form-control" placeholder="who you are!!" id="c_desc" rows="3">{{old('c_desc')}}</textarea>
+            <!-- c_desc intially -->
+            @else
+            <textarea name="c_desc" class="form-control" placeholder="who you are!!" id="c_desc" rows="3">{{$campaign->c_desc}}</textarea>@endif
           </div>
           <!-- c_desc error -->
           @if ($errors->has('c_desc'))
           <span class="invalid-feedback d-block" role="alert">
-                  <strong>{{ $errors->first('c_desc') }}</strong>
-              </span> @endif
+              <strong>{{ $errors->first('c_desc') }}</strong>
+          </span> @endif
           <!-- c_desc error ends -->
           <!-- budget&duration -->
           <div class="form-row">
             <div class="col form-group">
               <label for="budget">Budget</label>
-              <input type="number" id="budget" required class="form-control" name="c_budget" value="{{old('c_budget')}}" placeholder="Enter your budget">
+              <input type="number" id="budget" required class="form-control" name="c_budget" placeholder="Enter your budget">
+
               <!-- c_budget error -->
               @if ($errors->has('c_budget'))
               <span class="invalid-feedback d-block" role="alert">
@@ -60,7 +74,7 @@
             </div>
             <div class="col form-group">
               <label for="duration">Duration</label>
-              <input type="number" id="duration" required class="form-control" name="duration" value="{{old('duration')}}" placeholder="campaign duration">
+              <input type="number" id="duration" required class="form-control" name="duration" placeholder="campaign duration">
               <!-- duration error -->
               @if ($errors->has('duration'))
               <span class="invalid-feedback d-block" role="alert">
@@ -84,18 +98,21 @@
             </span> @endif
             <!-- cover_image error ends -->
           </div>
-          <input type="hidden" name="_token" value="{{ csrf_token() }}">
-          <button type="submit" class="btn btn-info mx-auto d-block mt-4">Create</button>
+          {{ method_field('PUT') }} {{ csrf_field() }}
+          <button type="submit" class="btn btn-info mx-auto d-block mt-4">Edit</button>
         </form>
       </div>
       <!-- card ends -->
-      <a href="{{route('campaign.index')}}" class="head-text d-block text-center my-4 toggle-text">All campaigns!!</a>
+      <a href="{{route('campaign.show',[$campaign->c_url])}}" class="head-text d-block text-center my-4 toggle-text">preview this campign!!</a>
     </div>
   </div>
   <!-- row ends -->
+</div>
+<script>
+  $("#budget").val(@if (old('c_budget')!='') {{old('c_budget')}} @else {{$campaign->c_budget}} @endif);
+  $("#duration").val(@if (old('duration')!='') {{old('duration')}} @else {{$campaign->duration}} @endif);
 
-  <script>
-    ////////////// file preview /////////////////
+  ////////////// file preview /////////////////
 function readURL(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();
@@ -105,5 +122,6 @@ function readURL(input) {
     reader.readAsDataURL(input.files[0]);
   } 
 }
-  </script>
+
+</script>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Transaction;
 use App\Http\Requests\UserFormRequest;
 
 class DashboardController extends Controller
@@ -78,5 +79,23 @@ class DashboardController extends Controller
         $user->save();
 
         return redirect('/' . $url)->with('success', 'Profile updated');
+    }
+    public function recharge()
+    {
+        return view('dashboard.recharge');
+    }
+    public function rechargeRequest(Request $request)
+    {
+        $this->validate($request, [
+            'amount' => 'required|min:1|max:10000|integer'
+        ]);
+        // create Transaction
+        $t = new Transaction;
+        $t->user_id = auth()->user()->id;
+        $t->from = 0;
+        $t->amount = $request->amount;
+        $t->save();
+
+        return redirect()->route('dashboard', [auth()->user()->url])->with('success', 'Amount: ' . $request->amount . ' has been requested to recharge.');
     }
 }

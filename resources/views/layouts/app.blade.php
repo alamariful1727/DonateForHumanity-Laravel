@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
+  <link rel="stylesheet" href="{{ asset('awesomplete.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
   <link rel="stylesheet" href="{{ asset('css/gijgo.min.css') }}" />
@@ -80,6 +81,7 @@
       0% {
         -webkit-transform: scale(0)
       }
+
       100% {
         -webkit-transform: scale(1.0);
         opacity: 0;
@@ -91,6 +93,7 @@
         -webkit-transform: scale(0);
         transform: scale(0);
       }
+
       100% {
         -webkit-transform: scale(1.0);
         transform: scale(1.0);
@@ -117,7 +120,7 @@
   </script>
   <button id="scrollTop" class="btn btn-outline-dark"><i class="fas fa-angle-up"></i></button>
   <div id="app">
-    <main class="py-4 mt-5">
+    <main class="mt-5">
   @include('inc.navbar') @yield('content')
     </main>
   </div>
@@ -128,6 +131,7 @@
 <script src="{{ url('js/axios.min.js')}}"></script>
 <script src="{{ url('js/owl.carousel.min.js')}}"></script>
 <script src="{{ url('js/fa.js')}}"></script>
+<script src="awesomplete.js" async></script>
 <script src="{{ url('js/main.js')}}"></script>
 
 </html>
