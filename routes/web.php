@@ -64,6 +64,10 @@ Route::get('/myblogs', 'BlogsController@userBlogs')->name('blogs.userBlogs');
 
 // campaigns
 Route::resource('campaign', 'CampaignsController');
+// donations
+Route::get('/campaign/{cid}/donate', 'CampaignsController@donatePage')->name('campaign.donatePage');
+Route::post('/campaign/{cid}/donate', 'CampaignsController@donate')->name('campaign.donate');
+
 
 // user dashboard
 Route::get('/{url}', 'DashboardController@index')->name('dashboard');

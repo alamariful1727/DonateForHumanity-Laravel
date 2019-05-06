@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Transaction;
 use App\Http\Requests\UserFormRequest;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -27,8 +28,14 @@ class DashboardController extends Controller
     public function index($url)
     {
         $user = User::where('url', $url)->first();
+        $donations = DB::table('donations')
+            ->join('campaigns', 'donations.campaign_id', '=', 'campaigns.cid')
+            ->join('users', 'donations.user_id', '=', 'users.id')
+            ->where('id', $user->id)
+            ->get();
+        // dd($donations);
         if ($user != null) {
-            return view('dashboard.index')->with('user', $user);
+            return view('dashboard.index')->with('user', $user)->with('donations', $donations);
         }
         return redirect()->back()->with('error', 'Sorry, No user found in http://www.onlinecarrent.com/' . $url);
     }

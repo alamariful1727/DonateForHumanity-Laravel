@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Campaigns;
+use App\User;
 use Illuminate\Http\Request;
+use App\Donation;
+use Illuminate\Support\Facades\DB;
 
 class CampaignsController extends Controller
 {
@@ -92,7 +95,12 @@ class CampaignsController extends Controller
     public function show($url)
     {
         $data = Campaigns::where('c_url', $url)->get();
-        return view('campaign.show')->with('campaign', $data[0]);
+        $donations = DB::table('donations')
+            ->join('users', 'donations.user_id', '=', 'users.id')
+            ->where('campaign_id', $data[0]->cid)
+            ->get();
+        // dd($donations);
+        return view('campaign.show')->with('campaign', $data[0])->with('donations', $donations);
     }
 
     /**
@@ -172,5 +180,42 @@ class CampaignsController extends Controller
             return redirect()->route('campaign.index')->with('success', 'Campaign Title:' . $campaign->title . '. has been Deleted.');
         }
         return redirect()->route('campaign.index')->with('error', 'Unauthorized attempt.');
+    }
+
+    public function donatePage($cid)
+    {
+        $data = Campaigns::find($cid);
+        if ($data->c_balance == $data->c_budget) {
+            return redirect()->route('campaign.show', [$data->c_url])->with('success', 'Campaign has enough donations, thank you!!');
+        }
+        if ($data->c_status == 'active') {
+            return view('campaign.donate')->with('campaign', $data);
+        }
+        return redirect()->back()->with('error', 'Campaign is not active yet.');
+    }
+    public function donate($cid, Request $request)
+    {
+        if ($request->amount <=  auth()->user()->balance) {
+            $campaign = Campaigns::find($cid);
+            $amountLeft = $campaign->c_budget - $campaign->c_balance;
+            $this->validate($request, [
+                'amount' => 'required|min:1|max:' . $amountLeft . '|integer'
+            ]);
+            // create Donation
+            $donation = new Donation();
+            $donation->campaign_id = $cid;
+            $donation->user_id = auth()->user()->id;
+            $donation->d_amount = $request->amount;
+            $donation->save();
+            $user = User::find(auth()->user()->id);
+            $user->balance = $user->balance -  $request->amount;
+            $user->save();
+            $campaign->c_balance = $campaign->c_balance +  $request->amount;
+            $campaign->save();
+
+            return redirect()->route('campaign.show', [$campaign->c_url])->with('success', 'Title: ' . $campaign->title . ' has received ' . $request->amount . '$ From: ' . $user->email);
+        } else {
+            return redirect()->back()->with('error', 'Insufficient balance to donate.');
+        }
     }
 }

@@ -143,7 +143,32 @@
                     <h5>
                         <strong>Donation history</strong>
                     </h5>
-                    <hr class="my-3">
+                    @if (count($donations)>0)
+                    <table class="table table-striped table-dark table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>No.</th>
+                                <th>Title</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $i=1;@endphp
+                            @foreach ($donations as $donation)
+                            <tr>
+                                <td scope="row">{{$i++}}</td>
+                                <td><a href="{{route('campaign.show',[$donation->c_url])}}"
+                                        class="text-decoration-none text-info">{{$donation->title}}</a></td>
+                                <td>{{$donation->d_amount}}</td>
+                                <td>{{$donation->d_created_at}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @else
+                    <small>No contributions yet!!</small>
+                    @endif
                 </div>
             </section>
             <!--Section: Donation history ends-->

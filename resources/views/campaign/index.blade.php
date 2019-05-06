@@ -1,9 +1,6 @@
 @extends('layouts.app')
-
-
-
 @section('content')
-  @include('inc.msg')
+@include('inc.msg')
 <div class="container">
   <h1 class="text-center head-text">Donation campaigns!!</h1>
   <hr class="head-hr">
@@ -13,7 +10,7 @@
     <div class="card-columns">
       @foreach ($campaigns as $campaign)
       <!-- check a active campaign -->
-      {{-- @if ($campaign->c_status == "active") --}}
+      @if ($campaign->c_status != "success")
       <div class="card">
         <!-- check login -->
         @if (Auth::check())
@@ -55,11 +52,14 @@
           </li>
           <li class="list-group-item">Duration : {{$campaign->duration}} days</li>
           <li class="list-group-item">Budget : {{$campaign->c_budget}}$</li>
-          <li class="list-group-item">Donated : {{$campaign->c_balance}}$ @if ($campaign->c_status == 'active') <a
-              href="#" class="btn btn-outline-danger ml-5">Donate now!! <i
-                class="fas fa-heart text-warning"></i></a>@endif</li>
+          <li class="list-group-item">Donated : {{$campaign->c_balance}}$ @if ($campaign->c_status == 'active' &&
+            $campaign->c_budget > $campaign->c_balance) <a href="{{route('campaign.donatePage',[$campaign->cid])}}"
+              class="btn btn-outline-danger ml-5">Donate now!!
+              <i class="fas fa-heart text-warning"></i></a>@endif</li>
         </ul>
-      </div> @endforeach
+      </div>
+      @endif
+      @endforeach
     </div>
     @else
     <p>No campaigns found!!</p>

@@ -623,6 +623,10 @@ class AdminController extends Controller
             $Campaign->ends = Carbon::now()->toDateTimeString();
         } else if ($status == 'success') {
             // successfully end a campaign
+            $user = User::find($Campaign->user_id);
+            $user->balance = $user->balance +  $Campaign->c_balance;
+            $user->save();
+            $Campaign->c_balance = 0;
             $Campaign->ends = Carbon::now()->toDateTimeString();
         }
         $Campaign->c_status = $status;

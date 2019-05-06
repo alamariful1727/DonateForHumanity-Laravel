@@ -19,4 +19,9 @@ class Campaigns extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function donation()
+    {
+        return $this->hasMany('App\Donation');
+    }
 }

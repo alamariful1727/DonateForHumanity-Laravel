@@ -11,7 +11,7 @@
 
 
 @section('content')
-    @include('inc.msg')
+@include('inc.msg')
 
 <!-- Breadcrumb-->
 <div class="breadcrumb-holder">
@@ -73,6 +73,8 @@
                                         <th>Title</th>
                                         <th>Creator</th>
                                         <th>Created at</th>
+                                        <th>Budget</th>
+                                        <th>Balance</th>
                                         <th>Start</th>
                                         <th>End</th>
                                         <th>Status</th>
@@ -85,6 +87,8 @@
                                         <td>{{$req->title}}</td>
                                         <td>{{$req->user->email}}</td>
                                         <td>{{$req->c_created_at}}</td>
+                                        <td>{{$req->c_budget}}</td>
+                                        <td>{{$req->c_balance}}</td>
                                         <td>{{$req->starts}}</td>
                                         <td>{{$req->ends}}</td>
                                         <td>

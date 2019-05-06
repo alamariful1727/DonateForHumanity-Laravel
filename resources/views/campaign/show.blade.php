@@ -3,7 +3,7 @@
 
 
 @section('content')
-  @include('inc.msg')
+@include('inc.msg')
 <div class="container">
   <h1 class="text-center head-text">{{$campaign->title}}</h1>
   <!-- check login -->
@@ -38,13 +38,41 @@
         </li>
         <li class="list-group-item">Finish on : {{$campaign->ends}}</li>
         <li class="list-group-item">Budget : {{$campaign->c_budget}}$</li>
-        <li class="list-group-item">Donated : {{$campaign->c_balance}}$ @if ($campaign->c_status == 'active') <a
-            href="#" class="btn btn-outline-danger ml-5">Donate now!! <i
-              class="fas fa-heart text-warning"></i></a>@endif</li>
+        <li class="list-group-item">Donated : {{$campaign->c_balance}}$ @if ($campaign->c_status == 'active' &&
+          $campaign->c_budget > $campaign->c_balance) <a href="{{route('campaign.donatePage',[$campaign->cid])}}"
+            class="btn btn-outline-danger ml-5">Donate now!! <i class="fas fa-heart text-warning"></i></a>@endif
+          @if($campaign->c_budget == $campaign->c_balance)
+          <span class="btn btn-outline-success ml-5">Enough donations for this campaign!! <i
+              class="fas fa-heart text-danger"></i></span> @endif</li>
         <li class="list-group-item">
           <h3>Name of contributors: </h3>
           <div class="list-group">
+            @if (count($donations) >0 )
+            <table class="table table-striped table-dark table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th>No.</th>
+                  <th>Name</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                @php $i=1;@endphp
+                @foreach ($donations as $donation)
+                <tr>
+                  <td scope="row">{{$i++}}</td>
+                  <td><a href="{{route('dashboard',[$donation->url])}}"
+                      class="text-decoration-none text-info">{{$donation->name}}</a></td>
+                  <td>{{$donation->d_amount}}</td>
+                  <td>{{$donation->d_created_at}}</td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+            @else
             <a href="#" class="list-group-item list-group-item-action">None</a>
+            @endif
           </div>
         </li>
       </ul>
